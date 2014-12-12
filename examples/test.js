@@ -10,7 +10,7 @@ var PlayMusic = require('../');
 var pm = new PlayMusic();
 var config = JSON.parse(fs.readFileSync("config.json"));
 pm.init(config, function() {
-    pm.getLibrary(function(library) {
+    pm.getLibrary(function(err, library) {
         var song = library.data.items.pop();
         console.log(song);
         pm.getStreamUrl(song.id, function(streamUrl) {
@@ -18,25 +18,27 @@ pm.init(config, function() {
         });
     });
 
-    pm.search("bastille lost fire", 5, function(data) {
+    pm.search("bastille lost fire", 5, function(err, data) {
         var song = data.entries.sort(function(a, b) {
             return a.score < b.score;
         }).shift();
         console.log(song);
-        pm.getStreamUrl(song.track.nid, function(streamUrl) {
+        pm.getStreamUrl(song.track.nid, function(err, streamUrl) {
             console.log(streamUrl);
         });
     }, function(err) {
         console.log(err);
     });
 
-    pm.getPlayLists(function(data) {
+    pm.getPlayLists(function(err, data) {
         console.log(data.data.items);
     });
 
-    pm.getPlayListEntries(function(data) {
+    pm.getPlayListEntries(function(err, data) {
         console.log(data.data.items);
     });
 
-    pm.getStreamUrl("Thvfmp2be3c7kbp6ny4arxckz54", console.log);
+    pm.getStreamUrl("Thvfmp2be3c7kbp6ny4arxckz54", function(err, data) {
+        console.log(data);
+    });
 });
